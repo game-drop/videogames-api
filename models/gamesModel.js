@@ -78,7 +78,21 @@ const getEneba = async () => {
 const getGog = async () => {
     let games = getOferta(
       'https://www.gog.com/en/games', // LINK
-      '.ng-star-inserted', // SECCION DEL JUEGO
+      '.', // SECCION DEL JUEGO
+      '.', // NOMBRE 
+      '.', // PRECIO SIN OFERTA
+      '.', // PRECIO CON OFERTA
+      '.', // IMAGEN
+      '.', // PORCENTAJE DE DESCUENTO   // NOTA QUITAR EL TEXTO "SAVE 95%" Y DEJAR SOLO EL NUMERO
+      '.'  // LINK
+    );
+    return games;
+};
+
+const getEpic = async () => {
+    let games = getOferta(
+      'https://store.epicgames.com/es-ES/browse?sortBy=releaseDate&sortDir=DESC&priceTier=tierDiscouted&category=Game&count=40&start=0', // LINK
+      '.', // SECCION DEL JUEGO
       '.', // NOMBRE 
       '.', // PRECIO SIN OFERTA
       '.', // PRECIO CON OFERTA
@@ -90,4 +104,4 @@ const getGog = async () => {
 };
   
 
-module.exports = { getSteam, getEneba, getGog };
+module.exports = { getSteam, getEneba, getGog, getEpic };

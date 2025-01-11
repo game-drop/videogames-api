@@ -1,5 +1,5 @@
 const express = require('express');
-const userRoutes = require('./routes/userRoutes');
+const gamesRoutes = require('./routes/gamesRoutes');
 
 const app = express();
 
@@ -11,7 +11,7 @@ const RUTA = '/';
 app.use(express.json());
 
 // Rutas
-app.use(RUTA, userRoutes);
+app.use(RUTA, gamesRoutes);
 
 // Inicio del servidor
 app.listen(PORT, () => {

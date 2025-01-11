@@ -17,4 +17,24 @@ router.get('/steam', async (req, res) => {
   }
 });
 
+// Obtener todos los juegos de eneba
+router.get('/eneba', async (req, res) => {
+  try {
+    const games = await gamesModel.getEneba();
+    res.json(games);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Obtener todos los juegos de gog
+router.get('/gog', async (req, res) => {
+  try {
+    const games = await gamesModel.getGog();
+    res.json(games);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

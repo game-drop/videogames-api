@@ -7,14 +7,12 @@ const app = express();
 
 const PORT = 3000;
 const RUTA = '/';
-const WEB = 'http://localhost:5173/';
 
 
-// Middleware para parsear JSON
 app.use(cors({
-  origin: WEB, // URL de tu aplicación Vue (ajusta el puerto según corresponda)
-  credentials: true // Si necesitas enviar cookies
-})) 
+  origin: 'http://localhost:5173', // URL exacta de tu aplicación frontend
+  credentials: true, // Permitir cookies si las necesitas
+}));
 
 app.use(express.json());
 

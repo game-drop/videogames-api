@@ -61,8 +61,8 @@ const getEneba = async () => {
       'https://www.eneba.com/promo/cheap-games?itm_source=eneba&itm_medium=navigation&itm_campaign=cheap_games', // LINK
       '.pFaGHa', // SECCION DEL JUEGO
       '.YLosEL', // NOMBRE 
-      '.L5ErLT', // PRECIO SIN OFERTA
-      '.L5ErLT', // PRECIO CON OFERTA
+      '.bmxuMu', // PRECIO SIN OFERTA
+      '.DTv7Ag', // PRECIO CON OFERTA
       '.LBwiWP', // IMAGEN
       '.PIG8fA', // PORCENTAJE DE DESCUENTO   // NOTA QUITAR EL TEXTO "SAVE 95%" Y DEJAR SOLO EL NUMERO
       '.GZjXOw'  // LINK

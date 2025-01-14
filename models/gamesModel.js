@@ -1,191 +1,208 @@
-const { chromium } = require('playwright');
+// Importación dinámica de playwright
+let chromium;
+import('playwright').then(playwright => {
+  chromium = playwright.chromium;
+});
 
-const getOferta = async (config) => {
-  const {
-    url,
-    selector,
-    tituloTxt,
-    precioAnteriorTxt,
-    precioFinalTxt,
-    imagenTxt,
-    ofertaTxt,
-    linkTxt,
-    detailSelectors,
-  } = config;
+// Función de utilidad para esperar un tiempo determinado
+const esperar = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const startTime = Date.now(); // Registra el tiempo de inicio
+// Función para medir el tiempo de ejecución de una función
+const medirTiempoEjecucion = async (fn) => {
 
-  const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+  const inicio = Date.now();
+  const resultado = await fn();
+  const tiempoEjecucion = ((Date.now() - inicio) / 1000).toFixed(2);
+  console.log(`Tiempo de ejecución: ${tiempoEjecucion} segundos`);
+  return resultado;
+
+};
+
+// Función principal de scraping
+async function scrapearTienda(config) {
+
+  const navegador = await chromium.launch({ headless: true });
+  const pagina = await navegador.newPage();
 
   try {
-    // Navegar a la página indicada
-    await page.goto(url, { timeout: 60000 });
+    await pagina.goto(config.url, { timeout: 60000 });
+    await pagina.waitForSelector(config.selectores.principal, { timeout: 10000 });
 
-    // Esperar a que los elementos relevantes estén cargados en la página
-    console.log(`Esperando el selector: ${selector}`);
-    await page.waitForSelector(selector, { timeout: 10000 });
+    const juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
+    const juegosFiltrados = juegos.filter(juego => juego.descuento !== 'SIN DESCUENTO');
 
-    // Extraer los datos con la lógica de extracción dentro de evaluate
-    const games = await page.evaluate(
-      ({ selector, tituloTxt, precioAnteriorTxt, precioFinalTxt, imagenTxt, ofertaTxt, linkTxt }) => {
-        const items = Array.from(document.querySelectorAll(selector));
+    console.log(`Se encontraron ${juegosFiltrados.length} juegos con descuento.`);
 
-        return items.map(item => ({
-          titulo: item.querySelector(tituloTxt)?.textContent.trim(),
-          precioAnterior: item.querySelector(precioAnteriorTxt)?.textContent.trim() || 'NO OFERTA',
-          precioFinal: item.querySelector(precioFinalTxt)?.textContent.trim(),
-          imagen: item.querySelector(imagenTxt)?.src,  // Extrae la imagen de la lista
-          oferta: item.querySelector(ofertaTxt)?.textContent.trim() || 'NO OFERTA',
-          link: item.querySelector(linkTxt)?.href || item.href,
-        }));
-      },
-      { selector, tituloTxt, precioAnteriorTxt, precioFinalTxt, imagenTxt, ofertaTxt, linkTxt }
+    const juegosDetallados = await Promise.all(
+      juegosFiltrados.map(juego => scrapearDetallesJuego(navegador, juego, config.selectores.detalles))
     );
 
-    // Filtrar elementos cuya oferta no sea "NO OFERTA"
-    const filteredGames = games.filter(game => game.oferta !== 'NO OFERTA');
-
-    console.log(`Se encontraron ${filteredGames.length} juegos con oferta.`);
-
-    // Scrapeo adicional para cada link
-    const detailedGames = [];
-    for (const game of filteredGames) {
-      if (Object.keys(detailSelectors).length > 0) {
-        try {
-          const detailPage = await browser.newPage();
-          await detailPage.goto(game.link, { timeout: 60000 });
-          await detailPage.waitForSelector(Object.values(detailSelectors)[0], { timeout: 10000 });
-
-          const details = await detailPage.evaluate(
-            ({ detailSelectors }) => {
-              const detailsData = {};
-              for (const [key, selector] of Object.entries(detailSelectors)) {
-                detailsData[key] = document.querySelector(selector)?.textContent.trim();
-              }
-              // Intentar obtener la imagen desde los detalles, si existe
-              const imagen = document.querySelector('.game_header_image_full')?.src;
-              detailsData.imagen = imagen || ''; // Fallback a una cadena vacía si no se encuentra
-              return detailsData;
-            },
-            { detailSelectors }
-          );
-
-          // Agregar datos detallados al juego
-          detailedGames.push({
-            ...game,
-            ...details,
-          });
-
-          await detailPage.close();
-        } catch (error) {
-          console.error(`Error al obtener detalles de ${game.link}:`, error);
-        }
-      } else {
-        detailedGames.push(game);
-      }
-    }
-
-    // Eliminar objetos con nombres repetidos
-    const uniqueGames = [];
-    const seenTitles = new Set();
-
-    for (const game of detailedGames) {
-      if (!seenTitles.has(game.titulo)) {
-        uniqueGames.push(game);
-        seenTitles.add(game.titulo);
-      }
-    }
-
-    console.log(`Lista final contiene ${uniqueGames.length} juegos únicos.`);
-    const endTime = Date.now(); // Registra el tiempo final
-    const executionTimeInSeconds = ((endTime - startTime) / 1000).toFixed(2); // Calcula el tiempo en segundos (con 2 decimales)
-    console.log(`Tiempo de ejecución: ${executionTimeInSeconds} segundos`);
-
-    return uniqueGames;
-
-  } catch (error) {
-    console.error('Error durante el scraping:', error);
-    return [];
+    return eliminarDuplicados(juegosDetallados);
   } finally {
-    await browser.close();
+    await navegador.close();
+  }
+
+}
+
+// Función para scrapear la página principal
+function scrapearPaginaPrincipal(selectores) {
+
+  const elementos = Array.from(document.querySelectorAll(selectores.principal));
+  return elementos.map(elemento => ({
+    titulo: elemento.querySelector(selectores.titulo)?.textContent.trim(),
+    precioOriginal: elemento.querySelector(selectores.precioOriginal)?.textContent.trim() || 'SIN DESCUENTO',
+    precioFinal: elemento.querySelector(selectores.precioFinal)?.textContent.trim(),
+    imagenExterna: elemento.querySelector(selectores.imagen)?.src,
+    descuento: elemento.querySelector(selectores.descuento)?.textContent.trim() || 'SIN DESCUENTO',
+    enlace: elemento.querySelector(selectores.enlace)?.href || elemento.href,
+  }));
+
+}
+
+// Función para scrapear los detalles de un juego
+async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {
+
+  if (Object.keys(selectoresDetalles).length === 0) return juego;
+
+  const pagina = await navegador.newPage();
+  try {
+    await pagina.goto(juego.enlace, { timeout: 60000 });
+    await pagina.waitForSelector(Object.values(selectoresDetalles)[0], { timeout: 10000 });
+
+    const detalles = await pagina.evaluate(extraerDetalles, selectoresDetalles);
+    return { ...juego, ...detalles };
+  } catch (error) {
+    console.error(`Error al obtener detalles de ${juego.titulo}:`, error);
+    return juego;
+  } finally {
+    await pagina.close();
+  }
+
+}
+
+// Función para extraer detalles de la página
+function extraerDetalles(selectores) {
+
+  const detalles = {};
+  for (const [clave, selector] of Object.entries(selectores)) {
+    detalles[clave] = document.querySelector(selector)?.textContent.trim() || '';
+  }
+  detalles.imagenInterna = document.querySelector(selectores.imagen)?.src || '';
+  return detalles;
+
+}
+
+// Función para eliminar juegos duplicados
+function eliminarDuplicados(juegos) {
+
+  const juegosUnicos = [];
+  const titulosVistos = new Set();
+  for (const juego of juegos) {
+    if (!titulosVistos.has(juego.titulo)) {
+      juegosUnicos.push(juego);
+      titulosVistos.add(juego.titulo);
+    }
+  }
+  console.log(`La lista final contiene ${juegosUnicos.length} juegos únicos.`);
+  return juegosUnicos;
+
+}
+
+// Configuraciones de las tiendas
+const configuracionesTiendas = {
+  steam: {
+    url: 'https://store.steampowered.com/',
+    selectores: {
+      principal: '.tab_item',
+      titulo: '.tab_item_name',
+      precioOriginal: '.discount_original_price',
+      precioFinal: '.discount_final_price',
+      descuento: '.discount_pct',
+      enlace: '.tab_item',
+      imagen: '.tab_item_cap_img',
+      detalles: {
+        desarrollador: '#developers_list',
+        fechaLanzamiento: '.release_date .date',
+        descripcion: '.game_description_snippet',
+        imagen: '.game_header_image_full',
+      },
+    },
+  },
+  eneba: {
+    url: 'https://www.eneba.com/promo/cheap-games?itm_source=eneba&itm_medium=navigation&itm_campaign=cheap_games',
+    selectores: {
+      principal: '.pFaGHa',
+      titulo: '.YLosEL',
+      precioOriginal: '.bmxuMu',
+      precioFinal: '.DTv7Ag',
+      imagen: '.LBwiWP',
+      descuento: '.PIG8fA',
+      enlace: '.GZjXOw',
+      detalles: {
+        desarrollador: '.r1iAKt',
+        fechaLanzamiento: '.r1iAKt',
+        descripcion: '.tq3wly',
+        imagen: '.OlZQ6u',
+      },
+    },
+  },
+};
+
+// Funciones específicas para cada tienda
+const getSteam = async () => {
+  try {
+    // Llamada
+    let juegos = await medirTiempoEjecucion(() => scrapearTienda(configuracionesTiendas.steam));
+
+    // Asegurarse de que juegos sea un array
+    if (!Array.isArray(juegos)) {
+      console.error('Error: juegos no es un array');
+      juegos = [];
+    }
+
+    // Filtros
+    juegos = juegos.map(juego => ({
+      ...juego,
+      imagen: juego.imagenInterna || juego.imagenExterna || juego.imagen || ''
+    }));
+
+    // Retorno
+    return juegos;
+  } catch (error) {
+    console.error('Error en getSteam:', error);
+    return [];
   }
 };
 
-const steamConfig = {
-  url: 'https://store.steampowered.com/',
-  selector: '.tab_item',
-  tituloTxt: '.tab_item_name',
-  precioAnteriorTxt: '.discount_original_price',
-  precioFinalTxt: '.discount_final_price',
-  ofertaTxt: '.discount_pct',
-  linkTxt: '.tab_item',
-  detailSelectors: {
-    developer: '#developers_list',
-    releaseDate: '.release_date .date',
-    description: '.game_description_snippet',
-    imagen: '.game_header_image_full',  
-  },
-};
-
-const getSteam = async () => getOferta(steamConfig);
-
-const enebaConfig = {
-  url: 'https://www.eneba.com/promo/cheap-games?itm_source=eneba&itm_medium=navigation&itm_campaign=cheap_games',
-  selector: '.pFaGHa',
-  tituloTxt: '.YLosEL',
-  precioAnteriorTxt: '.bmxuMu',
-  precioFinalTxt: '.DTv7Ag',
-  imagenTxt: '.LBwiWP img',
-  ofertaTxt: '.PIG8fA',
-  linkTxt: '.GZjXOw',
-  detailSelectors: {
-    developer: '#',
-    releaseDate: '.',
-    description: '.',
-    imagen: '.',  
-  },
-};
-
-
 const getEneba = async () => {
-  let games = await getOferta(enebaConfig);
-  return games.map(game => ({
-    ...game,
-    precioAnterior: game.precioAnterior.replace('Save', '').trim(),
-  }));
+
+  try {
+    // Llamada
+    let juegos = await medirTiempoEjecucion(() => scrapearTienda(configuracionesTiendas.eneba));
+
+    // Asegurarse de que juegos sea un array
+    if (!Array.isArray(juegos)) {
+      console.error('Error: juegos no es un array');
+      juegos = [];
+    }
+
+    // Filtros
+    juegos = juegos.map(juego => {
+      return {
+        ...juego,
+        imagen: juego.imagenInterna || juego.imagenExterna || juego.imagen || ''
+      };
+    });
+
+    // Retorno
+    return juegos;
+  } catch (error) {
+    console.error('Error en getEneba:', error);
+    return [];
+  }
+
 };
 
-const getGog = async () => {
-  // Configuración básica para GOG
-  // const gogConfig = {
-  //   url: 'https://www.gog.com/en/games',
-  //   selector: '.product-tile',
-  //   tituloTxt: '.product-tile__title',
-  //   precioAnteriorTxt: '.product-tile__price--old',
-  //   precioFinalTxt: '.product-tile__price--new',
-  //   imagenTxt: '.product-tile__image img',
-  //   ofertaTxt: '.product-tile__discount',
-  //   linkTxt: '.product-tile__link',
-  //   detailSelectors: {},
-  // };
-  // return getOferta(gogConfig);
-};
 
-const getEpic = async () => {
-  // Configuración básica para Epic Games
-  // const epicConfig = {
-  //   url: 'https://store.epicgames.com/en-US/browse?sortBy=releaseDate&sortDir=DESC&priceTier=tierDiscouted&category=Game&count=40&start=0',
-  //   selector: '.css-1jx3eyg',
-  //   tituloTxt: '.css-2ucwu',
-  //   precioAnteriorTxt: '.css-2vawxz',
-  //   precioFinalTxt: '.css-2ucwu',
-  //   imagenTxt: '.css-1anx036 img',
-  //   ofertaTxt: '.css-1jx3eyg .css-1nho2o4',
-  //   linkTxt: '.css-1jx3eyg a',
-  //   detailSelectors: {},
-  // };
-  // return getOferta(epicConfig);
-};
-
-module.exports = { getSteam, getEneba, getGog, getEpic };
+// Exportamos las funciones para su uso en otros módulos
+module.exports = { getSteam, getEneba };

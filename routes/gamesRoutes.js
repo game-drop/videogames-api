@@ -27,24 +27,4 @@ router.get('/eneba', async (req, res) => {
   }
 });
 
-// Obtener todos los juegos de gog
-router.get('/gog', async (req, res) => {
-  try {
-    const games = await gamesModel.getGog();
-    res.json(games);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Obtener todos los juegos de epic
-router.get('/epic', async (req, res) => {
-  try {
-    const games = await gamesModel.getEpic();
-    res.json(games);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 module.exports = router;

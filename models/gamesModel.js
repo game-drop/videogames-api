@@ -28,7 +28,8 @@ async function scrapearTienda(config) {
     await pagina.goto(config.url, { timeout: 60000 });
     await pagina.waitForSelector(config.selectores.principal, { timeout: 10000 });
 
-    const juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
+    let juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
+
     const juegosFiltrados = juegos.filter(juego => juego.descuento !== 'SIN DESCUENTO');
 
     console.log(`Se encontraron ${juegosFiltrados.length} juegos con descuento.`);
@@ -47,7 +48,10 @@ async function scrapearTienda(config) {
 // Función para scrapear la página principal
 function scrapearPaginaPrincipal(selectores) {
 
+  // Constante para definir el límite máximo de juegos a scrapear
+
   const elementos = Array.from(document.querySelectorAll(selectores.principal));
+    
   return elementos.map(elemento => ({
     titulo: elemento.querySelector(selectores.titulo)?.textContent.trim(),
     precioOriginal: elemento.querySelector(selectores.precioOriginal)?.textContent.trim() || 'SIN DESCUENTO',
@@ -139,8 +143,8 @@ const configuracionesTiendas = {
       descuento: '.PIG8fA',
       enlace: '.GZjXOw',
       detalles: {
-        desarrollador: '.r1iAKt',
-        fechaLanzamiento: '.r1iAKt',
+        desarrollador: '.eRDpjp',
+        fechaLanzamiento: '.eRDpjp',
         descripcion: '.tq3wly',
         imagen: '.OlZQ6u',
       },
@@ -188,12 +192,32 @@ const getEneba = async () => {
 
     // Filtros
     juegos = juegos.map(juego => {
-      return {
-        ...juego,
-        imagen: juego.imagenInterna || juego.imagenExterna || juego.imagen || ''
-      };
+      // Extraer desarrollador y fecha de lanzamiento con validación
+      const developerMatch = juego.desarrollador.match(/Publisher(.*?)Developers/);
+      const releaseDateMatch = juego.fechaLanzamiento.match(/Release date(.*?)Publisher/);
+    
+      juego.desarrollador = developerMatch ? developerMatch[1].trim() : '';
+      juego.fechaLanzamiento = releaseDateMatch ? releaseDateMatch[1].trim() : '';
+    
+      // Validar y convertir precios y descuentos a números
+      juego.precioOriginal = juego.precioOriginal
+        ? parseFloat(juego.precioOriginal.replace(/[^0-9.]/g, '')) || 0
+        : 0;
+    
+      juego.precioFinal = juego.precioFinal
+        ? parseFloat(juego.precioFinal.replace(/[^0-9.]/g, '')) || 0
+        : 0;
+    
+      juego.descuento = juego.descuento
+        ? parseFloat(juego.descuento.replace(/[^0-9.]/g, '')) || 0
+        : 0;
+    
+      // Selección de imagen
+      juego.imagen = juego.imagenInterna || juego.imagenExterna || juego.imagen || '';
+    
+      return juego;
     });
-
+    
     // Retorno
     return juegos;
   } catch (error) {

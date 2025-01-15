@@ -30,7 +30,7 @@ async function scrapearTienda(config) {
 
     let juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
 
-    const juegosFiltrados = juegos.filter(juego => juego.descuento !== 'SIN DESCUENTO');
+    const juegosFiltrados = juegos.filter(juego => juego.descuento !== 0);
 
     console.log(`Se encontraron ${juegosFiltrados.length} juegos con descuento.`);
 
@@ -48,19 +48,24 @@ async function scrapearTienda(config) {
 // Función para scrapear la página principal
 function scrapearPaginaPrincipal(selectores) {
 
-  // Constante para definir el límite máximo de juegos a scrapear
+  const NUM_MAX_JUEGOS = 24;
 
-  const elementos = Array.from(document.querySelectorAll(selectores.principal));
+  const elementos = Array.from(document.querySelectorAll(selectores.principal)).slice(0, NUM_MAX_JUEGOS);
     
-  return elementos.map(elemento => ({
-    titulo: elemento.querySelector(selectores.titulo)?.textContent.trim(),
-    precioOriginal: elemento.querySelector(selectores.precioOriginal)?.textContent.trim() || 'SIN DESCUENTO',
-    precioFinal: elemento.querySelector(selectores.precioFinal)?.textContent.trim(),
-    imagenExterna: elemento.querySelector(selectores.imagen)?.src,
-    descuento: elemento.querySelector(selectores.descuento)?.textContent.trim() || 'SIN DESCUENTO',
-    enlace: elemento.querySelector(selectores.enlace)?.href || elemento.href,
-  }));
+  return elementos.map(elemento => {
+    const precioOriginalText = elemento.querySelector(selectores.precioOriginal)?.textContent.trim();
+    const precioFinalText = elemento.querySelector(selectores.precioFinal)?.textContent.trim();
+    const descuentoText = elemento.querySelector(selectores.descuento)?.textContent.trim();
 
+    return {
+      titulo: elemento.querySelector(selectores.titulo)?.textContent.trim(),
+      precioOriginal: precioOriginalText ? parseFloat(precioOriginalText.replace(/[^0-9,\.]/g, '').replace(',', '.')) : 0,
+      precioFinal: precioFinalText ? parseFloat(precioFinalText.replace(/[^0-9,\.]/g, '').replace(',', '.')) : 0,
+      imagenExterna: elemento.querySelector(selectores.imagen)?.src,
+      descuento: descuentoText ? parseFloat(descuentoText.replace(/[^0-9,\.]/g, '').replace(',', '.')) : 0,      
+      enlace: elemento.querySelector(selectores.enlace)?.href || elemento.href,
+    };
+  });
 }
 
 // Función para scrapear los detalles de un juego
@@ -199,19 +204,6 @@ const getEneba = async () => {
       juego.desarrollador = developerMatch ? developerMatch[1].trim() : '';
       juego.fechaLanzamiento = releaseDateMatch ? releaseDateMatch[1].trim() : '';
     
-      // Validar y convertir precios y descuentos a números
-      juego.precioOriginal = juego.precioOriginal
-        ? parseFloat(juego.precioOriginal.replace(/[^0-9.]/g, '')) || 0
-        : 0;
-    
-      juego.precioFinal = juego.precioFinal
-        ? parseFloat(juego.precioFinal.replace(/[^0-9.]/g, '')) || 0
-        : 0;
-    
-      juego.descuento = juego.descuento
-        ? parseFloat(juego.descuento.replace(/[^0-9.]/g, '')) || 0
-        : 0;
-    
       // Selección de imagen
       juego.imagen = juego.imagenInterna || juego.imagenExterna || juego.imagen || '';
     
@@ -230,3 +222,4 @@ const getEneba = async () => {
 
 // Exportamos las funciones para su uso en otros módulos
 module.exports = { getSteam, getEneba };
+

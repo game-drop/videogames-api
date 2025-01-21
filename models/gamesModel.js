@@ -28,14 +28,28 @@ async function scrapearTienda(config) {
     await pagina.goto(config.url, { timeout: 60000 });
     await pagina.waitForSelector(config.selectores.principal, { timeout: 10000 });
 
+    // Obtener juegos de la página principal
     let juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
     console.log(`Se encontraron ${juegos.length} juegos CON DESCUENTO.`);
     console.log(`[TERMINADO] Pagina principal terminada`);
 
+    // Agregar `platform` y `id` a cada juego
+    juegos = juegos.map(juego => ({
+      ...juego,
+      platform: config.selectores.nombreTienda || 'Desconocido', // Añadir el nombre de la tienda desde la configuración
+      id: juego.titulo
+        ?.toLowerCase()
+        .replace(/[^\w\s-]/g, '') // Eliminar caracteres especiales excepto espacios y guiones
+        .replace(/\s+/g, '-')     // Reemplazar espacios por guiones
+        || 'sin-titulo',          // Generar un ID único limpio
+    }));
+
+    // Obtener detalles adicionales para cada juego
     const juegosDetallados = await Promise.all(
       juegos.map(juego => scrapearDetallesJuego(navegador, juego, config.selectores.detalles))
     );
 
+    // Limpiar y eliminar duplicados
     const juegosFinal = limpiarJuegos(eliminarDuplicados(juegosDetallados));
     console.log(`La lista final contiene ${juegosFinal.length} juegos FINALES.`);
 
@@ -43,7 +57,6 @@ async function scrapearTienda(config) {
   } finally {
     await navegador.close();
   }
-
 }
 
 // Función para scrapear la página principal
@@ -177,6 +190,7 @@ const configuracionesTiendas = {
       descuento: '.discount_pct',
       enlace: '.search_result_row',
       imagen: null,
+      nombreTienda: 'steam',
       detalles: {
         desarrollador: '#developers_list',
         fechaLanzamiento: '.release_date .date',
@@ -195,6 +209,7 @@ const configuracionesTiendas = {
       imagen: '.LBwiWP',
       descuento: '.PIG8fA',
       enlace: '.GZjXOw',
+      nombreTienda: 'eneba',
       detalles: {
         desarrollador: '.eRDpjp',
         fechaLanzamiento: '.eRDpjp',

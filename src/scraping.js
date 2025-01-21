@@ -125,6 +125,7 @@ async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {
     return { ...juego, ...detalles };
   } catch (error) {
     console.error("\x1b[31m - [ERROR] Error al obtener detalles de " + juego.titulo + "\x1b[0m");
+    console.error(error); // COMENTAR PARA NO MOSTRAR ERRORES
     return juego;
   } finally {
     await pagina.close();

@@ -23,8 +23,8 @@ async function scrapearTienda(config) {
   const pagina = await navegador.newPage();
 
   try {
-    await pagina.goto(config.url, { timeout: 60000 });
-    await pagina.waitForSelector(config.selectores.principal, { timeout: 10000 });
+    await pagina.goto(config.url, { timeout: aMili(5) });
+    await pagina.waitForSelector(config.selectores.principal, { timeout: aMili(1) });
 
     let juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
     console.log("");
@@ -110,8 +110,8 @@ async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {
 
   const pagina = await navegador.newPage();
   try {
-    await pagina.goto(juego.enlace, { timeout: 60000 });
-    await pagina.waitForSelector(Object.values(selectoresDetalles)[0], { timeout: 10000 });
+    await pagina.goto(juego.enlace, { timeout: aMili(5) });
+    await pagina.waitForSelector(Object.values(selectoresDetalles)[0], { timeout: aMili(1) });
 
     const detalles = await pagina.evaluate(extraerDetalles, selectoresDetalles);
     console.log(` - [TERMINADO] Se termino el juego: ${juego.titulo}`);
@@ -171,6 +171,10 @@ const limpiarJuegos = (juegos) => {
     );
   });
 };
+
+function aMili(segundos) {
+  return segundos * 60000;
+}
 
 // Exportamos las funciones
 module.exports = { scrapearTienda, medirTiempoEjecucion };

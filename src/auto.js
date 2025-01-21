@@ -104,7 +104,7 @@ const guardarJuegosEnArchivo = async () => {
 };
 
 // Ejecutar la función
-// guardarJuegosEnArchivo();
-// setInterval(guardarJuegosEnArchivo, 3600000); // 3600000 ms = 1 hora -- 75000 ms = 1.25 minutos
+guardarJuegosEnArchivo();
+setInterval(guardarJuegosEnArchivo, 3600000); // 3600000 ms = 1 hora -- 75000 ms = 1.25 minutos
 
 module.exports = { getSteam, getEneba };

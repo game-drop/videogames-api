@@ -12,7 +12,7 @@ const medirTiempoEjecucion = async (fn) => {
   const inicio = Date.now();
   const resultado = await fn();
   const tiempoEjecucion = ((Date.now() - inicio) / 1000).toFixed(2);
-  console.log(`Tiempo de ejecución: ${tiempoEjecucion} segundos`);
+  console.log("\x1b[32m[TERMINADO]\x1b[0m Tiempo de ejecución: " + tiempoEjecucion + "s");
   return resultado;
 };
 
@@ -28,8 +28,10 @@ async function scrapearTienda(config) {
 
     // Obtener juegos de la página principal
     let juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
-    console.log(`Se encontraron ${juegos.length} juegos CON DESCUENTO.`);
-    console.log(`[TERMINADO] Pagina principal terminada`);
+    console.log("");
+    console.log(`\x1b[33m[INICIANDO]\x1b[0m ${config.nombreTienda}`);
+    console.log("\x1b[33m[INICIANDO]\x1b[0m Nuemro de juegos: " + juegos.length);
+    console.log(` - [TERMINADO] Pagina principal terminada`);
 
     // Agregar `platform` y `id` a cada juego
     juegos = juegos.map(juego => ({
@@ -49,7 +51,7 @@ async function scrapearTienda(config) {
 
     // Limpiar y eliminar duplicados
     const juegosFinal = limpiarJuegos(eliminarDuplicados(juegosDetallados));
-    console.log(`La lista final contiene ${juegosFinal.length} juegos FINALES.`);
+    console.log(`\x1b[32m[TERMINADO]\x1b[0m Numero de juegos: ${juegosFinal.length}`);
 
     return juegosFinal;
   } finally {
@@ -96,7 +98,7 @@ async function scrapearPaginaPrincipal(selectores) {
 
     // Si no hemos alcanzado los 24 juegos, obtenemos más
     if (juegos.length < NUM_MAX_JUEGOS) {
-      console.log(`Se necesitan más juegos. Intentando obtener más elementos...`);
+      console.log("\x1b[31mNumero existen suficientes juegos\x1b[0m");
     }
   }
 
@@ -119,10 +121,10 @@ async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {
     await pagina.waitForSelector(Object.values(selectoresDetalles)[0], { timeout: 10000 });
 
     const detalles = await pagina.evaluate(extraerDetalles, selectoresDetalles);
-    console.log(` - [TERMINADO] Se termino uno de los juegos].`);
+    console.log(` - [TERMINADO] Se termino uno de los juegos.`);
     return { ...juego, ...detalles };
   } catch (error) {
-    console.error(`Error al obtener detalles de ${juego.titulo}:`, error);
+    console.error("\x1b[31m - [ERROR] Error al obtener detalles de " + juego.titulo + "\x1b[0m");
     return juego;
   } finally {
     await pagina.close();

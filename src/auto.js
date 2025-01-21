@@ -95,17 +95,15 @@ const getEneba = async () => {
 
 // Función para guardar juegos en un archivo JSON
 const guardarJuegosEnArchivo = async () => {
-    console.log('Guardando juegos en juegos.json...');
     const steamGames = await getSteam();
      const enebaGames = await getEneba();
     const allGames = [...steamGames, ...enebaGames];
     fs.writeFileSync(path.join(__dirname, 'juegos.json'), JSON.stringify(allGames, null, 2));
-    console.log('Juegos guardados en juegos.json');
+    console.log("\x1b[32m[GUARDADO]\x1b[0m Juegos guardados en el json");
 };
 
-// Ejecutar la función inmediatamente al iniciar la app
+// Ejecutar la función
 guardarJuegosEnArchivo();
-// Ejecutar la función periódicamente (por ejemplo, cada hora)
-setInterval(guardarJuegosEnArchivo, 3600000);
+setInterval(guardarJuegosEnArchivo, 3600000); // 3600000 ms = 1 hora -- 75000 ms = 1.25 minutos
 
 module.exports = { getSteam, getEneba };

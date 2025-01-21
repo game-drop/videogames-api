@@ -22,5 +22,5 @@ app.use(RUTA, gamesRoutes);
 
 // Inicio del servidor
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`\x1b[32m[SERVER]\x1b[0m Funcionando en http://localhost:${PORT}`);
 });

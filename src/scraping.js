@@ -29,7 +29,7 @@ async function scrapearTienda(config) {
     // Obtener juegos de la página principal
     let juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
     console.log("");
-    console.log(`\x1b[33m[INICIANDO]\x1b[0m ${config.nombreTienda}`);
+    console.log(`\x1b[33m[INICIANDO]\x1b[0m ${config.selectores.nombreTienda}`);
     console.log("\x1b[33m[INICIANDO]\x1b[0m Nuemro de juegos: " + juegos.length);
     console.log(` - [TERMINADO] Pagina principal terminada`);
 

@@ -70,20 +70,6 @@
     "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1158310/header.jpg?t=1736498603"
   },
   {
-    "titulo": "Tom Clancy's Rainbow Six® Siege",
-    "precioOriginal": 19.99,
-    "precioFinal": 7.99,
-    "descuento": 60,
-    "enlace": "https://store.steampowered.com/app/359550/Tom_Clancys_Rainbow_Six_Siege/?snr=1_7_7_2300_150_1",
-    "platform": "steam",
-    "id": "tom-clancys-rainbow-six-siege",
-    "desarrollador": "Ubisoft Montreal",
-    "fechaLanzamiento": "1 Dec, 2015",
-    "descripcion": "Tom Clancy's Rainbow Six® Siege is an elite, tactical team-based shooter where superior planning and execution triumph.",
-    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/359550/header.jpg?t=1733419428",
-    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/359550/header.jpg?t=1733419428"
-  },
-  {
     "titulo": "Hearts of Iron IV",
     "precioOriginal": 49.99,
     "precioFinal": 14.99,
@@ -96,20 +82,6 @@
     "descripcion": "Victory is at your fingertips! Your ability to lead your nation is your supreme weapon, the strategy game Hearts of Iron IV lets you take command of any nation in World War II; the most engaging conflict in world history.",
     "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/394360/header.jpg?t=1735836462",
     "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/394360/header.jpg?t=1735836462"
-  },
-  {
-    "titulo": "Manor Lords",
-    "precioOriginal": 39.99,
-    "precioFinal": 27.99,
-    "descuento": 30,
-    "enlace": "https://store.steampowered.com/app/1363080/Manor_Lords/?snr=1_7_7_2300_150_1",
-    "platform": "steam",
-    "id": "manor-lords",
-    "desarrollador": "Slavic Magic",
-    "fechaLanzamiento": "26 Apr, 2024",
-    "descripcion": "Manor Lords is a medieval strategy game featuring in-depth city building, large-scale tactical battles, and complex economic and social simulations. Rule your lands as a medieval lord – the seasons pass, the weather changes, and cities rise and fall.",
-    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1363080/header.jpg?t=1737359450",
-    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1363080/header.jpg?t=1737359450"
   },
   {
     "titulo": "Europa Universalis IV",
@@ -126,18 +98,32 @@
     "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/236850/header.jpg?t=1735836392"
   },
   {
-    "titulo": "Age of Darkness: Final Stand",
-    "precioOriginal": 26.99,
-    "precioFinal": 9.44,
-    "descuento": 65,
-    "enlace": "https://store.steampowered.com/app/1426450/Age_of_Darkness_Final_Stand/?snr=1_7_7_2300_150_1",
+    "titulo": "Tom Clancy's Rainbow Six® Siege",
+    "precioOriginal": 19.99,
+    "precioFinal": 7.99,
+    "descuento": 60,
+    "enlace": "https://store.steampowered.com/app/359550/Tom_Clancys_Rainbow_Six_Siege/?snr=1_7_7_2300_150_1",
     "platform": "steam",
-    "id": "age-of-darkness-final-stand",
-    "desarrollador": "PlaySide",
-    "fechaLanzamiento": "15 Jan, 2025",
-    "descripcion": "Age of Darkness: Final Stand is a dark fantasy survival RTS where you must illuminate, build and defend humanity’s last bastion against hordes of Nightmares. Set in the remnants of a kingdom consumed by a deadly fog, you decide. Will you hide in the light? Or take back your world.",
-    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426450/header.jpg?t=1737057617",
-    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426450/header.jpg?t=1737057617"
+    "id": "tom-clancys-rainbow-six-siege",
+    "desarrollador": "Ubisoft Montreal",
+    "fechaLanzamiento": "1 Dec, 2015",
+    "descripcion": "Tom Clancy's Rainbow Six® Siege is an elite, tactical team-based shooter where superior planning and execution triumph.",
+    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/359550/header.jpg?t=1733419428",
+    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/359550/header.jpg?t=1733419428"
+  },
+  {
+    "titulo": "Manor Lords",
+    "precioOriginal": 39.99,
+    "precioFinal": 27.99,
+    "descuento": 30,
+    "enlace": "https://store.steampowered.com/app/1363080/Manor_Lords/?snr=1_7_7_2300_150_1",
+    "platform": "steam",
+    "id": "manor-lords",
+    "desarrollador": "Slavic Magic",
+    "fechaLanzamiento": "26 Apr, 2024",
+    "descripcion": "Manor Lords is a medieval strategy game featuring in-depth city building, large-scale tactical battles, and complex economic and social simulations. Rule your lands as a medieval lord – the seasons pass, the weather changes, and cities rise and fall.",
+    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1363080/header.jpg?t=1737359450",
+    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1363080/header.jpg?t=1737359450"
   },
   {
     "titulo": "Stellaris",
@@ -154,18 +140,18 @@
     "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/281990/header.jpg?t=1737396052"
   },
   {
-    "titulo": "Warhammer 40,000: Space Marine 2",
-    "precioOriginal": 59.99,
-    "precioFinal": 44.99,
-    "descuento": 25,
-    "enlace": "https://store.steampowered.com/app/2183900/Warhammer_40000_Space_Marine_2/?snr=1_7_7_2300_150_1",
+    "titulo": "Age of Darkness: Final Stand",
+    "precioOriginal": 26.99,
+    "precioFinal": 9.44,
+    "descuento": 65,
+    "enlace": "https://store.steampowered.com/app/1426450/Age_of_Darkness_Final_Stand/?snr=1_7_7_2300_150_1",
     "platform": "steam",
-    "id": "warhammer-40000-space-marine-2",
-    "desarrollador": "Saber Interactive",
-    "fechaLanzamiento": "9 Sep, 2024",
-    "descripcion": "Embody the superhuman skill and brutality of a Space Marine. Unleash deadly abilities and devastating weaponry to obliterate the relentless Tyranid swarms. Defend the Imperium in spectacular third-person action in solo or multiplayer modes.",
-    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2183900/header.jpg?t=1736766952",
-    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2183900/header.jpg?t=1736766952"
+    "id": "age-of-darkness-final-stand",
+    "desarrollador": "PlaySide",
+    "fechaLanzamiento": "15 Jan, 2025",
+    "descripcion": "Age of Darkness: Final Stand is a dark fantasy survival RTS where you must illuminate, build and defend humanity’s last bastion against hordes of Nightmares. Set in the remnants of a kingdom consumed by a deadly fog, you decide. Will you hide in the light? Or take back your world.",
+    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426450/header.jpg?t=1737057617",
+    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1426450/header.jpg?t=1737057617"
   },
   {
     "titulo": "Age of Empires IV: Anniversary Edition",
@@ -180,6 +166,20 @@
     "descripcion": "Celebrating its first year of delighting millions of global players, the award-winning and best-selling strategy franchise continues with Age of Empires IV: Anniversary Edition, putting you at the center of even more epic historical battles that shaped the world.",
     "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1466860/header.jpg?t=1724793729",
     "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1466860/header.jpg?t=1724793729"
+  },
+  {
+    "titulo": "Warhammer 40,000: Space Marine 2",
+    "precioOriginal": 59.99,
+    "precioFinal": 44.99,
+    "descuento": 25,
+    "enlace": "https://store.steampowered.com/app/2183900/Warhammer_40000_Space_Marine_2/?snr=1_7_7_2300_150_1",
+    "platform": "steam",
+    "id": "warhammer-40000-space-marine-2",
+    "desarrollador": "Saber Interactive",
+    "fechaLanzamiento": "9 Sep, 2024",
+    "descripcion": "Embody the superhuman skill and brutality of a Space Marine. Unleash deadly abilities and devastating weaponry to obliterate the relentless Tyranid swarms. Defend the Imperium in spectacular third-person action in solo or multiplayer modes.",
+    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2183900/header.jpg?t=1736766952",
+    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2183900/header.jpg?t=1736766952"
   },
   {
     "titulo": "Halo: The Master Chief Collection",
@@ -208,20 +208,6 @@
     "descripcion": "From the creators of the award-winning Age of Empires franchise, Age of Mythology: Retold goes beyond history to a mythical age where gods, monsters, and humans collide.",
     "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1934680/header.jpg?t=1736876871",
     "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1934680/header.jpg?t=1736876871"
-  },
-  {
-    "titulo": "NBA 2K25",
-    "precioOriginal": 120.88,
-    "precioFinal": 39.87,
-    "descuento": 67,
-    "enlace": "https://store.steampowered.com/app/2878980/NBA_2K25/?snr=1_7_7_2300_150_1",
-    "platform": "steam",
-    "id": "nba-2k25",
-    "desarrollador": "Visual Concepts",
-    "fechaLanzamiento": "28 Oct, 2024",
-    "descripcion": "Command every court with authenticity and realism Powered by ProPLAY™, giving you ultimate control over how you play in NBA 2K25. Define your legacy in MyCAREER, MyTEAM, MyNBA, and The W.",
-    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2878980/header.jpg?t=1736525487",
-    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2878980/header.jpg?t=1736525487"
   },
   {
     "titulo": "Call to Arms - Gates of Hell: Ostfront",
@@ -264,6 +250,20 @@
     "descripcion": "Emperor Edition is the definitive edition of ROME II, featuring an improved politics system, overhauled building chains, rebalanced battles and improved visuals in both campaign and battleEmperor Edition contains all free feature updates since its release in 2013, which includes bug fixes, balancing, Twitch.",
     "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/214950/header.jpg?t=1689855991",
     "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/214950/header.jpg?t=1689855991"
+  },
+  {
+    "titulo": "NBA 2K25",
+    "precioOriginal": 120.88,
+    "precioFinal": 39.87,
+    "descuento": 67,
+    "enlace": "https://store.steampowered.com/app/2878980/NBA_2K25/?snr=1_7_7_2300_150_1",
+    "platform": "steam",
+    "id": "nba-2k25",
+    "desarrollador": "Visual Concepts",
+    "fechaLanzamiento": "28 Oct, 2024",
+    "descripcion": "Command every court with authenticity and realism Powered by ProPLAY™, giving you ultimate control over how you play in NBA 2K25. Define your legacy in MyCAREER, MyTEAM, MyNBA, and The W.",
+    "imagen": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2878980/header.jpg?t=1736525487",
+    "imagenInterna": "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2878980/header.jpg?t=1736525487"
   },
   {
     "titulo": "Doom Eternal Steam Key GLOBAL",

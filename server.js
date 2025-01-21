@@ -11,7 +11,8 @@ const RUTA = '/';
 
 
 app.use(cors({
-  origin: 'http://localhost:5173', // URL exacta de tu aplicación frontend
+  origin: 'https://wombadeals.com/', // URL exacta de tu aplicación frontend
+  // origin: 'http://localhost:5173', // URL exacta de tu aplicación frontend
   credentials: true, // Permitir cookies si las necesitas
 }));
 

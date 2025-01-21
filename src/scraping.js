@@ -16,53 +16,43 @@ const medirTiempoEjecucion = async (fn) => {
   return resultado;
 };
 
-// Función principal de scraping
+// En el código principal, crea una sola instancia de navegador
 async function scrapearTienda(config) {
   await importarPlaywright();  // Asegurarse de que se haya importado correctamente `playwright`
-  const navegador = await chromium.launch({ headless: true });
+  const navegador = await chromium.launch({ headless: true }); // Lanza una sola instancia de navegador
   const pagina = await navegador.newPage();
 
   try {
     await pagina.goto(config.url, { timeout: 60000 });
     await pagina.waitForSelector(config.selectores.principal, { timeout: 10000 });
 
-    // Obtener juegos de la página principal
     let juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
     console.log("");
     console.log(`\x1b[33m[INICIANDO]\x1b[0m ${config.selectores.nombreTienda}`);
     console.log("\x1b[33m[INICIANDO]\x1b[0m Numero de juegos: " + juegos.length);
     console.log(` - [TERMINADO] Pagina principal terminada`);
 
-    // Agregar `platform` y `id` a cada juego
     juegos = juegos.map(juego => ({
       ...juego,
-      platform: config.selectores.nombreTienda || 'Desconocido', // Añadir el nombre de la tienda desde la configuración
-      id: juego.titulo
-        ?.toLowerCase()
-        .replace(/[^\w\s-]/g, '') // Eliminar caracteres especiales excepto espacios y guiones
-        .replace(/\s+/g, '-')     // Reemplazar espacios por guiones
-        || 'sin-titulo',          // Generar un ID único limpio
+      platform: config.selectores.nombreTienda || 'Desconocido',
+      id: juego.titulo?.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-') || 'sin-titulo',
     }));
 
-    // Obtener detalles adicionales para cada juego
     const juegosDetallados = await Promise.all(
       juegos.map(juego => scrapearDetallesJuego(navegador, juego, config.selectores.detalles))
     );
 
-    // Limpiar y eliminar duplicados
     const juegosFinal = limpiarJuegos(eliminarDuplicados(juegosDetallados));
     console.log(`\x1b[32m[TERMINADO]\x1b[0m Numero de juegos: ${juegosFinal.length}`);
 
     return juegosFinal;
   } finally {
-    await navegador.close();
+    await navegador.close(); // Cerrar el navegador después de completar todo el scraping
   }
 }
 
-
 // Función para scrapear la página principal
 async function scrapearPaginaPrincipal(selectores) {
-
   const NUM_MAX_JUEGOS = 24;
 
   let juegos = [];
@@ -107,11 +97,14 @@ async function scrapearPaginaPrincipal(selectores) {
     juegos = juegos.slice(0, NUM_MAX_JUEGOS); // Limitar a 24 juegos como máximo
   }
 
+  // Cerrar la página después de scrapear la página principal
+  document.close();
   return juegos;
 }
 
 
-// Función para scrapear los detalles de un juego
+
+// Función para scrapear los detalles de un juego (optimizada)
 async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {
   if (Object.keys(selectoresDetalles).length === 0) return juego;
 
@@ -122,15 +115,17 @@ async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {
 
     const detalles = await pagina.evaluate(extraerDetalles, selectoresDetalles);
     console.log(` - [TERMINADO] Se termino el juego: ${juego.titulo}`);
+
     return { ...juego, ...detalles };
   } catch (error) {
     console.error("\x1b[31m - [ERROR] Error al obtener detalles de " + juego.titulo + "\x1b[0m");
-    // console.error(error); // COMENTAR PARA NO MOSTRAR ERRORES
     return juego;
   } finally {
+    // Cerrar la página después de obtener los detalles del juego
     await pagina.close();
   }
 }
+
 
 // Función para extraer detalles de la página
 function extraerDetalles(selectores) {

@@ -103,7 +103,7 @@ const guardarJuegosEnArchivo = async () => {
     console.log("\x1b[32m[GUARDADO]\x1b[0m Juegos guardados en el json");
 };
 
-// Ejecutar la función
+// Ejecutar la función          // DESCOMENTAR PARA HACER WEB SCRAPING                                       <-------- IMPORTANTE
 // guardarJuegosEnArchivo();
 // setInterval(guardarJuegosEnArchivo, 3600000); // 3600000 ms = 1 hora -- 75000 ms = 1.25 minutos
 

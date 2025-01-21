@@ -96,9 +96,7 @@ const getEneba = async () => {
 // Función para guardar juegos en un archivo JSON
 const guardarJuegosEnArchivo = async () => {
 
-    const steamGames = await getSteam();
-    const enebaGames = await getEneba();
-    const allGames = [...steamGames, ...enebaGames];
+    const allGames = [...await getSteam(), ...await getEneba()];
 
     fs.writeFileSync(path.join(__dirname, 'juegos.json'), JSON.stringify(allGames, null, 2));
     console.log("");

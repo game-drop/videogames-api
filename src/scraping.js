@@ -121,7 +121,7 @@ async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {
     await pagina.waitForSelector(Object.values(selectoresDetalles)[0], { timeout: 10000 });
 
     const detalles = await pagina.evaluate(extraerDetalles, selectoresDetalles);
-    console.log(` - [TERMINADO] Se termino uno de los juegos.`);
+    console.log(` - [TERMINADO] Se termino el juego: ${juego.titulo}`);
     return { ...juego, ...detalles };
   } catch (error) {
     console.error("\x1b[31m - [ERROR] Error al obtener detalles de " + juego.titulo + "\x1b[0m");

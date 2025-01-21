@@ -30,7 +30,7 @@ async function scrapearTienda(config) {
     let juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
     console.log("");
     console.log(`\x1b[33m[INICIANDO]\x1b[0m ${config.selectores.nombreTienda}`);
-    console.log("\x1b[33m[INICIANDO]\x1b[0m Nuemro de juegos: " + juegos.length);
+    console.log("\x1b[33m[INICIANDO]\x1b[0m Numero de juegos: " + juegos.length);
     console.log(` - [TERMINADO] Pagina principal terminada`);
 
     // Agregar `platform` y `id` a cada juego
@@ -125,7 +125,7 @@ async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {
     return { ...juego, ...detalles };
   } catch (error) {
     console.error("\x1b[31m - [ERROR] Error al obtener detalles de " + juego.titulo + "\x1b[0m");
-    console.error(error); // COMENTAR PARA NO MOSTRAR ERRORES
+    // console.error(error); // COMENTAR PARA NO MOSTRAR ERRORES
     return juego;
   } finally {
     await pagina.close();

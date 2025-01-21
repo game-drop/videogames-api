@@ -57,8 +57,10 @@ async function scrapearTienda(config) {
   }
 }
 
+
 // Función para scrapear la página principal
 async function scrapearPaginaPrincipal(selectores) {
+
   const NUM_MAX_JUEGOS = 24;
 
   let juegos = [];
@@ -105,6 +107,7 @@ async function scrapearPaginaPrincipal(selectores) {
 
   return juegos;
 }
+
 
 // Función para scrapear los detalles de un juego
 async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {

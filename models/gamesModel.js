@@ -30,6 +30,7 @@ async function scrapearTienda(config) {
 
     let juegos = await pagina.evaluate(scrapearPaginaPrincipal, config.selectores);
     console.log(`Se encontraron ${juegos.length} juegos CON DESCUENTO.`);
+    console.log(`[TERMINADO] Pagina principal terminada`);
 
     const juegosDetallados = await Promise.all(
       juegos.map(juego => scrapearDetallesJuego(navegador, juego, config.selectores.detalles))
@@ -106,6 +107,7 @@ async function scrapearDetallesJuego(navegador, juego, selectoresDetalles) {
     await pagina.waitForSelector(Object.values(selectoresDetalles)[0], { timeout: 10000 });
 
     const detalles = await pagina.evaluate(extraerDetalles, selectoresDetalles);
+    console.log(` - [TERMINADO] Se termino uno de los juegos].`);
     return { ...juego, ...detalles };
   } catch (error) {
     console.error(`Error al obtener detalles de ${juego.titulo}:`, error);

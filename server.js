@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors')
 
 const gamesRoutes = require('./routes/gamesRoutes');
+require('./src/auto');
 
 const app = express();
 

@@ -4,8 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node server.js",  // Este es el comando de producción
+    "dev": "nodemon server.js",  // Este es el comando para desarrollo, con nodemon
+    "deploy": "echo 'No deploy script specified for this project'"  // Aquí puedes agregar el comando de deploy si usas alguna plataforma como Heroku
   },
   "keywords": [],
   "author": "",

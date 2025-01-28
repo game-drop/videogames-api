@@ -1,0 +1,5 @@
+name = "videogames-api"
+type = "javascript"
+account_id = "game-drop"
+workers_dev = true
+compatibility_date = "2025-01-028"

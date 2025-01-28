@@ -1,5 +1,8 @@
 name = "videogames-api"
 type = "javascript"
-account_id = "game-drop"
+account_id = "f5e2565686025dfda8bc4d72b4d92313cls"
 workers_dev = true
 compatibility_date = "2025-01-028"
+
+main = "server.js"
+
